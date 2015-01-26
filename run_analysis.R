@@ -1,3 +1,5 @@
+library(dplyr)
+
 if(!file.exists("./project")) {dir.create("./project")}
 fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip "
 download.file(fileUrl, destfile = "./project/Dataset.zip", method = "curl")
@@ -27,18 +29,18 @@ names(dataFeatures) <- dataFeaturesnames$V2
 ##binding columns
 data1 <- cbind(dataActivity, dataSubject)
 finaldf <- cbind(dataFeatures, data1)
-head(finaldf)
+##head(finaldf)
 ##subsetting names of Features by measurements on mean and standard deviation
 subsetdataFeaturesnames <- dataFeaturesnames$V2[grep("mean\\(\\)|std\\(\\)", dataFeaturesnames$V2)]
 ##subsetting the data frame by the selected names of Features
 names <- c(as.character(subsetdataFeaturesnames), "Subject", "Activity")
 finaldf <- subset(finaldf, select = names)
-str(finaldf)
+##str(finaldf)
 ##use descriptive activity names to name the activities in the data set
 ##read the descriptive activity
 activitylabels <- read.table(file.path(path_rf, "activity_labels.txt"), header = FALSE)$V2
 finaldf$Activity <- factor(finaldf$Activity, labels = activitylabels)
-head(finaldf$Activity, 30)
+##head(finaldf$Activity, 30)
 ##appropriately labels the data set with descriptive variable names
 names(finaldf)<-gsub("^t", "time", names(finaldf))
 names(finaldf)<-gsub("^f", "frequency", names(finaldf))
